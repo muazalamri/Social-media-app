@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NetInfo</title>
+
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/libs.min.css">
+    <link rel="stylesheet" href="/static/css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="/static/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
+    <link rel="stylesheet" href="/static/vendor/font-awesome-line-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+
+</head>
+
+<body class="  ">
+    {% include 'parts/loader.html' %}
+    <!-- loader END -->
+    <!-- Wrapper Start -->
+    <div class="wrapper">
+     {%include 'parts/side.html' %}
+     {% include 'parts/top.html' %}
+
+        <div id="content-page" class="content-page">
+            <div class="container">
+                <div class="d-grid gap-3 d-grid-template-1fr-19">
+                    {% for event_d in allevent %}
+                    <div class="">
+                        <div class="card rounded  mb-0">
+                            <div class="event-images">
+                                <a href="#">
+                                    <img src="{{event_d['imd']}}" class="img-fluid" alt="Responsive image">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="date-of-event">
+                                        <span>{{event_d['year']}}</span>
+                                        <span>{{event_d['mon']}}</span>
+                                        <h5>{{event_d['day']}}</h5>
+                                    </div>
+                                    <div class="events-detail ms-3">
+                                        <h5><a href="/event-detail.html">{{event_d['name']}}</a></h5>
+                                        <p>{{event_d['disc']}}</p>
+                                        <div class="event-member">
+                                            <div class="iq-media-group">
+                                                {% for people in event_d['people'] %}
+                                                <a href="#" class="iq-media">
+                                                    <img class="img-fluid avatar-40 rounded-circle"
+                                                        src="{{people['img']}}" alt="">
+                                                </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Wrapper End-->
+    {% include 'parts/footer.html' %}<!-- Backend Bundle JavaScript -->
+    <script src="/static/js/libs.min.js"></script>
+    <!-- slider JavaScript -->
+    <script src="/static/js/slider.js"></script>
+    <!-- masonry JavaScript -->
+    <script src="/static/js/masonry.pkgd.min.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/enchanter.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/sweetalert.js"></script>
+    <!-- app JavaScript -->
+    <script src="/static/js/charts/weather-chart.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+    <script src="/static/js/lottie.js"></script>
+
+
+    <!-- offcanvas start -->
+
+    {% include 'parts/offcanvas.html' %}</body>
+
+</html>

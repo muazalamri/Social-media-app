@@ -1,0 +1,7 @@
+flask_login
+flask
+flask_sqlalchemy
+markdown
+pydub
+flask_wtf
+sympy

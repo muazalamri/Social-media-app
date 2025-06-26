@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شريط جانبي متكامل</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: row-reverse;
+            /* RTL layout */
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            height: 100vh;
+            transition: all 0.3s;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .sidebar-header h2,
+        .sidebar.collapsed .dropdown-toggle::after {
+            display: none;
+        }
+
+        .sidebar.collapsed .dropdown-menu {
+            display: none !important;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background-color: #1a252f;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .sidebar-menu {
+            padding: 0;
+            list-style: none;
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+        }
+
+        .menu-item {
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .menu-item a:hover {
+            background-color: #34495e;
+            color: #fff;
+        }
+
+        .menu-item a i {
+            margin-left: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .menu-text {
+            transition: opacity 0.3s;
+        }
+
+        .dropdown-menu {
+            list-style: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #1a252f;
+        }
+
+        .dropdown-menu.show {
+            max-height: 500px;
+        }
+
+        .dropdown-menu a {
+            padding-right: 40px;
+        }
+
+        .dropdown-toggle::after {
+            content: '\25BC';
+            margin-right: auto;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .dropdown-toggle.active::after {
+            transform: rotate(-180deg);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            min-height: 100vh;
+            transition: all 0.3s;
+            width: calc(100% - 250px);
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            width: calc(100% - 70px);
+        }
+
+        .content-container {
+            max-width: 100%;
+            overflow-x: auto;
+            word-wrap: break-word;
+        }
+
+        /* أيقونات افتراضية (يمكن استبدالها بأيقونات Font Awesome) */
+        .fas {
+            font-style: normal;
+            font-weight: bold;
+        }
+        .link_erea {
+            display: block;
+            border-block-end-width: 15px;
+        }
+        .link_cont {
+            display: flex;
+            display: flex;
+            overflow-y:;
+            justify-content: space-between;
+            /* Additional flex properties */
+            padding: 0 20px;
+            /* space between items */
+            /*align-items: center;*/
+            /* vertical alignment */
+        }
+
+        /* Optional: Equal width items */
+        .link_cont > div {
+            flex: 1;
+            /* makes items equal width */
+            text-align: center;
+            /* centers content */
+        }
+@media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 70px;
+                overflow: hidden;
+                transition: max-height 0.3s;
+            }
+
+            .sidebar.expanded {
+                max-height: 100vh;
+            }
+
+            .main-content {
+                width: 100%;
+            }
+
+            .indiv {
+                background-color: #1a252f;
+            }
+
+            .sidebar.collapsed ~ .main-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>القائمة الجانبية</h2>
+            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+        </div>
+        <ul class="sidebar-menu">
+            {% for w_route in w_routes %}
+            <li class="menu-item">
+                <a href="#">
+                    <i class="fas">⌂</i>
+                    <span class="menu-text">الرئيسية</span>
+                </a>
+            </li>
+            {% endfor %}
+            {% for lw_route in lw_routes %}
+            <li class="menu-item">
+                <a href="#" class="dropdown-toggle">
+                    <i class="fas">⚙</i>
+                    <span class="menu-text">الإعدادات</span>
+                </a>
+                <ul class="dropdown-menu">
+                    {% for down in lw_route["down"] %}
+                    <li><a href="#">keep coding</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="content-container">
+            {html_data_to_replace}
+        </div>
+    </div>
+    <div class="indiv">
+        join write your comment <form>
+            <input type="email">
+        </form>
+    </div>
+    <div>
+        comments:<hr>
+        no comment yet<br> ,be frist one to comment
+    </div>
+    <div class="indiv">
+        join Email List <form>
+            <input type="email">
+        </form>
+    </div>
+    <div>
+        links:
+    </div>
+    <div class="link_erea">
+        <ul class="link_cont">
+            {% for w_route in w_routes %}
+            <a>
+                name
+            </a>
+            {% endfor %}
+        </ul>
+        <ul class="link_cont">
+            {% for lw_route in lw_routes %}
+            <a>
+                name:
+                {% for down in lw_route['down'] %}
+                <a>
+                    {{down}}
+                </a>
+                {% endfor %}
+            </a>
+            {% endfor %}
+        </ul>
+        <hr>
+        <ul class="link_cont">
+            socials:
+            {% for social in socials %}
+            <a>
+                {{social['name']}}
+            </a>
+            {%endfor%}
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    // منع الحدث إذا كانت القائمة مصغرة
+                    if (document.querySelector('.sidebar').classList.contains('collapsed') && window.innerWidth > 768) {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    // إغلاق جميع القوائم المفتوحة أولاً
+                    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                        if (menu !== this.nextElementSibling) {
+                            menu.classList.remove('show');
+                            menu.previousElementSibling.classList.remove('active');
+                        }
+                    });
+
+                    // تبديل القائمة الحالية
+                    const dropdownMenu = this.nextElementSibling;
+                    dropdownMenu.classList.toggle('show');
+                    this.classList.toggle('active');
+                });
+            });
+
+            // إغلاق القوائم عند النقر خارجها
+            document.addEventListener('click', function(e) {
+                if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
+                    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                        menu.classList.remove('show');
+                        menu.previousElementSibling.classList.remove('active');
+                    });
+                }
+            });
+        });
+        document.getElementsByClassName('codehilite').forEach(element => {
+            element.style['overflow-y'] = 'auto';
+        });
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+
+            if (window.innerWidth <= 768) {
+                // Mobile behavior - toggle height
+                sidebar.classList.toggle('expanded');
+            } else {
+                // Desktop behavior - toggle width
+                sidebar.classList.toggle('collapsed');
+
+                if (sidebar.classList.contains('collapsed')) {
+                    // إغلاق جميع القوائم المنسدلة عند تصغير الشريط
+                    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                        menu.classList.remove('show');
+                        menu.previousElementSibling.classList.remove('active');
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

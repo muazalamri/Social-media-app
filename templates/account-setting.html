@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NetInfo</title>
+
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/libs.min.css">
+    <link rel="stylesheet" href="/static/css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="/static/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
+    <link rel="stylesheet" href="/static/vendor/font-awesome-line-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+
+</head>
+
+<body class="  ">
+    {% include 'parts/loader.html' %}
+    <!-- Wrapper Start -->
+    <div class="wrapper">
+     {%include 'parts/side.html' %}
+     {% include 'parts/top.html' %}
+        <div id="content-page" class="content-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Account Setting</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="acc-edit">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="uname" class="form-label">User Name:</label>
+                                            <input type="text" class="form-control" id="uname" value="Bni@01">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email" class="form-label">Email Id:</label>
+                                            <input type="email" class="form-control" id="email"
+                                                value="Bnijohn@gmail.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="altemail" class="form-label">Alternate Email:</label>
+                                            <input type="email" class="form-control" id="altemail"
+                                                value="designtheme@gmail.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="d-block form-label">Language Known:</label>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" class="form-check-input" id="english" checked="">
+                                                <label class="form-check-label" for="english">English</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" class="form-check-input" id="french" checked="">
+                                                <label class="form-check-label" for="french">French</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" class="form-check-input" id="hindi">
+                                                <label class="form-check-label" for="hindi">Hindi</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" class="form-check-input" id="spanish" checked="">
+                                                <label class="form-check-label" for="spanish">Spanish</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" class="form-check-input" id="arabic">
+                                                <label class="form-check-label" for="arabic">Arabic</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" class="form-check-input" id="italian">
+                                                <label class="form-check-label" for="italian">Italian</label>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                        <button type="reset" class="btn bg-soft-danger">Cancle</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Social Media</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="acc-edit">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="facebook" class="form-label">Facebook:</label>
+                                            <input type="text" class="form-control" id="facebook"
+                                                value="www.facebook.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="twitter" class="form-label">Twitter:</label>
+                                            <input type="text" class="form-control" id="twitter"
+                                                value="www.twitter.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="google" class="form-label">Google +:</label>
+                                            <input type="text" class="form-control" id="google" value="www.google.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="instagram" class="form-label">Instagram:</label>
+                                            <input type="text" class="form-control" id="instagram"
+                                                value="www.instagram.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="youtube" class="form-label">You Tube:</label>
+                                            <input type="text" class="form-control" id="youtube"
+                                                value="www.youtube.com">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                        <button type="reset" class="btn bg-soft-danger">Cancle</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Wrapper End-->
+    {% include 'parts/footer.html' %}
+    <!-- Backend Bundle JavaScript -->
+    <script src="/static/js/libs.min.js"></script>
+    <!-- slider JavaScript -->
+    <script src="/static/js/slider.js"></script>
+    <!-- masonry JavaScript -->
+    <script src="/static/js/masonry.pkgd.min.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/enchanter.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/sweetalert.js"></script>
+    <!-- app JavaScript -->
+    <script src="/static/js/charts/weather-chart.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+    <script src="/static/js/lottie.js"></script>
+
+
+    <!-- offcanvas start -->
+
+    {% include 'parts/offcanvas.html' %}
+</body>
+
+</html>

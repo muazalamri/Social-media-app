@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NetInfo</title>
+
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/libs.min.css">
+    <link rel="stylesheet" href="/static/css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="/static/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
+    <link rel="stylesheet" href="/static/vendor/font-awesome-line-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+<style>
+    #content-grid {
+        height: 80vh;
+        /* or any desired height */
+        overflow-y: auto;
+    }
+</style>
+</head>
+
+<body class="  ">
+    {% include 'parts/loader.html' %}
+    <!-- loader END -->
+    <!-- Wrapper Start -->
+    <div class="wrapper">
+     {%include 'parts/side.html' %}
+     {% include 'parts/top.html' %}
+
+        <div id="content-page" class="content-page">
+            <div class="container">
+                <div class="d-grid gap-3 d-grid-template-1fr-19"id="content-grid">
+                    {% for group in groups %}
+                    <div class="card mb-0">
+                        <div class="top-bg-image">
+                            <img src="{{group['backImg']}}" class="img-fluid w-100" alt="group-bg">
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="group-icon">
+                                <img src="{{group['img']}}" alt="profile-img"
+                                    class="rounded-circle img-fluid avatar-120">
+                            </div>
+                            <div class="group-info pt-3 pb-3">
+                                <h4><a href="/group-detail/{{group['name']}}">{{group['name']}}</a></h4>
+                                <p>{{group['disc']}}</p>
+                            </div>
+                            <div class="group-details d-inline-block pb-3">
+                                <ul class="d-flex align-items-center justify-content-between list-inline m-0 p-0">
+                                    <li class="pe-3 ps-3">
+                                        <p class="mb-0">Post</p>
+                                        <h6>{{group['posts']}}</h6>
+                                    </li>
+                                    <li class="pe-3 ps-3">
+                                        <p class="mb-0">Member</p>
+                                        <h6>{{group['member']}}</h6>
+                                    </li>
+                                    <li class="pe-3 ps-3">
+                                        <p class="mb-0">Visit</p>
+                                        <h6>{{group['visit']}}</h6>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="group-member mb-3">
+                                <div class="iq-media-group">
+                                    {% for user in group['mebs'] %}
+                                    <a href="/profile/{{user.id}}" class="iq-media">
+                                        <img class="img-fluid avatar-40 rounded-circle" src="/static/images/user/{{user.id}}.jpg"
+                                            alt="">
+                                    </a>
+                                    {%endfor%}
+                                </div>
+                            </div>
+                            <a href="/group-detail/{{group['name']}}"><button type="submit" class="btn btn-primary d-block w-100">Join</button></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Wrapper End-->
+    {% include 'parts/footer.html' %}<!-- Backend Bundle JavaScript -->
+    <script src="/static/js/libs.min.js"></script>
+    <!-- slider JavaScript -->
+    <script src="/static/js/slider.js"></script>
+    <!-- masonry JavaScript -->
+    <script src="/static/js/masonry.pkgd.min.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/enchanter.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/sweetalert.js"></script>
+    <!-- app JavaScript -->
+    <script src="/static/js/charts/weather-chart.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+    <script src="/static/js/lottie.js"></script>
+    <script src="/static/js/load_groups.js"></script>
+
+
+    <!-- offcanvas start -->
+
+    {% include 'parts/offcanvas.html' %}</body>
+
+</html>

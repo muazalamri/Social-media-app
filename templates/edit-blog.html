@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NetInfo</title>
+
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/libs.min.css">
+    <link rel="stylesheet" href="/static/css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="/static/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
+    <link rel="stylesheet" href="/static/vendor/font-awesome-line-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <style>
+        .text {
+            width: 100%;
+            height: 100vh;
+        }
+        .Hidy {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="  ">
+    {% include 'parts/loader.html' %}
+    <!-- loader END -->
+    <!-- Wrapper Start -->
+    <div class="wrapper">
+        {%include 'parts/side.html' %}
+        {% include 'parts/top.html' %}
+        <div id="content-page" class="content-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="iq-edit-list">
+                                    <ul class="iq-edit-profile/ row nav nav-pills">
+                                        <li class="col-md-3 p-0">
+                                            <a class="nav-link active" data-bs-toggle="pill"
+                                                href="#personal-information">
+                                                mange home page
+                                            </a>
+                                        </li>
+                                        <li class="col-md-3 p-0">
+                                            <a class="nav-link" data-bs-toggle="pill" href="#chang-pwd">
+                                                routes
+                                            </a>
+                                        </li>
+                                        <li class="col-md-3 p-0">
+                                            <a class="nav-link" data-bs-toggle="pill" href="#emailandsms">
+                                                accounting
+                                            </a>
+                                        </li>
+                                        <li class="col-md-3 p-0">
+                                            <a class="nav-link" data-bs-toggle="pill" href="#manage-contact">
+                                                Manage Contact
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="iq-edit-list-data">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="personal-information" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between">
+                                            <div class="header-title">
+                                                <h4 class="card-title">Personal Information</h4>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="personal-info">
+                                                <div class="form-group row align-items-center">
+                                                    <div class="col-md-12">
+                                                        <div class="profile-img-edit">
+                                                            <img class="profile-pic" src="/static/images/user/11.png"
+                                                            alt="profile-pic">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="fname" class="form-label">edit Icon</label>
+                                                    <i class="ri-pencil-line upload-button text-white"></i>
+                                                    <input type="file" name="img" accept="image/*">
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="fname" class="form-label">edit loading image</label>
+                                                    <i class="ri-pencil-line upload-button text-white"></i>
+                                                    <input type="file" name="loader" accept="image/*">
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="lname" class="form-label">Name:</label>
+                                                    <input type="text" class="form-control" name="BlogName" id="lname"
+                                                    value="{{job}}">
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="emailnotification">AI chat bot:</label>
+                                                    <div class="col-md-9 form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" id="AI_CHAT" checked>
+                                                        <label class="form-check-label" for="AI_CHAT">Allow</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="emailnotification">AI Auto_transolate to english:</label>
+                                                    <div class="col-md-9 form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" id="Auto_transolate" checked>
+                                                        <label class="form-check-label" for="Auto_transolate">Allow</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="lname" class="form-label">domin:</label>
+                                                    <input type="text" class="form-control" name="work" id="lname"
+                                                    value="{{working}}">
+                                                    <div id="sug_domin"></div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                                <button type="reset" class="btn bg-soft-danger">Cancle</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="chang-pwd" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between">
+                                            <div class="iq-header-title">
+                                                <h4 class="card-title">Your blog routes</h4>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            {% include 'comp/toDo.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="emailandsms" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between">
+                                            <div class="header-title">
+                                                <h4 class="card-title">accounting</h4>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="conForm">
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="emailnotification">With accounts:</label>
+                                                    <div class="col-md-9 form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                                        <label class="form-check-label" for="flexSwitchCheckChecked">Allow</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="emailnotification">Email List:</label>
+                                                    <div class="col-md-9 form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked1" checked>
+                                                        <label class="form-check-label" for="flexSwitchCheckChecked1">Allow</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="emailnotification">Allow sing in with Netinfo account:</label>
+                                                    <div class="col-md-9 form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckChecked11" checked>
+                                                        <label class="form-check-label"
+                                                            for="flexSwitchCheckChecked11">Allowed</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="emailnotification">Recive Verification with phone number:</label>
+                                                    <div class="col-md-9 form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckChecked111" checked>
+                                                        <label class="form-check-label" for="flexSwitchCheckChecked111">Allow</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="smsnotification">SMS  Notification:</label>
+                                                    <div class="col-md-9 form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckChecked12" checked>
+                                                        <label class="form-check-label"
+                                                            for="flexSwitchCheckChecked12">Allow</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="npass">Tow step Authorizing with phone number</label>
+                                                    <div class="col-md-9">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                            id="flexCheckDefault12">
+                                                            <label class="form-check-label" for="flexCheckDefault12">
+                                                                Always.
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check d-block">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                            id="email02">
+                                                            <label class="form-check-label" for="email02">optionl</label>
+                                                        </div>
+                                                        <div class="form-check d-block">
+                                                            <input type="checkbox" class="form-check-input" id="email03"
+                                                            checked="">
+                                                            <label class="form-check-label" for="email03">Never</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <label class="col-md-3" for="npass">Emailing List joining:</label>
+                                                    <div class="col-md-9">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                            id="email04">
+                                                            <label class="form-check-label" for="email04">
+                                                                Always
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check d-block">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                            id="email05">
+                                                            <label class="form-check-label" for="email05">optionl</label>
+                                                        </div>
+                                                        <div class="form-check d-block">
+                                                            <input type="checkbox" class="form-check-input" id="email06"
+                                                            checked="">
+                                                            <label class="form-check-label" for="email06">Never</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                                <button type="reset" class="btn bg-soft-danger">Cancle</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="manage-contact" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between">
+                                            <div class="header-title">
+                                                <h4 class="card-title">Manage Contact</h4>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="contactForm">
+                                                <div class="form-group">
+                                                    <label for="cno" class="form-label">Contact Number:</label>
+                                                    <input type="text" class="form-control" id="cno"
+                                                    value="001 2536 123 458">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="cno" class="form-label">Authorizing Number:</label>
+                                                    <input type="text" class="form-control" id="cno"
+                                                    value="001 2536 123 458">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">Email:</label>
+                                                    <input type="text" class="form-control" id="email"
+                                                    value="Bnijone@demo.com">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">linkedin:</label>
+                                                    <input type="text" class="form-control" id="email"
+                                                    value="Bnijone@demo.com">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">Instagram:</label>
+                                                    <input type="text" class="form-control" id="email"
+                                                    value="Bnijone@demo.com">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">X:</label>
+                                                    <input type="text" class="form-control" id="email"
+                                                    value="Bnijone@demo.com">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">You Tube:</label>
+                                                    <input type="text" class="form-control" id="email"
+                                                    value="Bnijone@demo.com">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">Face Book:</label>
+                                                    <input type="text" class="form-control" id="email"
+                                                    value="Bnijone@demo.com">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="url" class="form-label">Url:</label>
+                                                    <input type="text" class="form-control" id="url"
+                                                    value="https://getbootstrap.com">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                                <button type="reset" class="btn bg-soft-danger">Cancle</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Wrapper End-->
+    {% include 'parts/footer.html' %}
+    <!-- Backend Bundle JavaScript -->
+    <script src="/static/js/libs.min.js"></script>
+    <!-- slider JavaScript -->
+    <script src="/static/js/slider.js"></script>
+    <!-- masonry JavaScript -->
+    <script src="/static/js/masonry.pkgd.min.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/enchanter.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/sweetalert.js"></script>
+    <!-- app JavaScript -->
+    <script src="/static/js/charts/weather-chart.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+    <script src="/static/js/lottie.js"></script>
+    <script src="/static/js/profile-edit.js"></script>
+    <script src="/static/js/editor.js"></script>
+    <script src="/static/js/todo.js"></script>
+
+
+    <!-- offcanvas start -->
+
+    {% include 'parts/offcanvas.html' %}
+</body>
+
+</html>

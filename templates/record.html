@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Live Video</title>
+</head>
+
+<body>
+    <h1>Record Live Video Stream</h1>
+    <video id="video" autoplay></video>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        const video = document.getElementById('video');
+        const constraints = {
+            audio: false,
+            video: true,
+        };
+
+        const socket = io.connect(`${window.location.origin}/ws`);
+        const room = '{{ id }}';
+
+        socket.emit('join', { room: room });
+
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => {
+                video.srcObject = stream;
+                const mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            socket.emit('stream', { room: room, data: reader.result });
+                        };
+                        reader.readAsArrayBuffer(event.data);
+                    }
+                };
+
+                mediaRecorder.start(100); // Send data every 100ms
+            })
+            .catch((error) => {
+                console.error('Error accessing media devices.', error);
+            });
+
+        window.onbeforeunload = () => {
+            socket.emit('leave', { room: room });
+        };
+    </script>
+</body>
+
+</html>

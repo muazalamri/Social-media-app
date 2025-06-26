@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NetInfo</title>
+
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/libs.min.css">
+    <link rel="stylesheet" href="/static/css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="/static/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
+    <link rel="stylesheet" href="/static/vendor/font-awesome-line-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <style>
+        #content-page {
+            height: 100vh;
+            /* or any desired height */
+            overflow-y: auto;
+        }
+    </style>
+
+</head>
+
+<body class="  ">
+    <!-- loader Start -->
+    {% include 'parts/loader.html' %}
+    <!-- loader END -->
+    <!-- Wrapper Start -->
+    <div class="wrapper" id="content -page">
+        {%include 'parts/side.html' %}
+        {% include 'parts/top.html' %}
+        <div class="content-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
+                            <div class="group-info d-flex align-items-center">
+                                <div class="me-3">
+                                    <img class="rounded-circle img-fluid avatar-100" src="/static/images/page-img/gi-1.jpg"
+                                    alt="">
+                                </div>
+                                <div class="info">
+                                    <h4>{{Gname}}</h4>
+                                    <p class="mb-0">
+                                        <i class="ri-lock-fill pe-2"></i>Private Group . {{member}} members
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="group-member d-flex align-items-center  mt-md-0 mt-2">
+                                <div class="iq-media-group me-3">
+                                    {% for user in mebs %}
+                                    <a href="/profile/{{user.id}}" class="iq-media">
+                                        <img class="img-fluid avatar-40 rounded-circle" src="/static/images/user/{{user.id}}.jpg"
+                                        alt="">
+                                    </a>
+                                    {%endfor%}
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2"><i
+                                    class="ri-add-line me-1"></i>Invite</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="content-page" class="col-lg-8">
+                        {% include 'comp/post_create.html' %}
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Groups</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-inline p-0 m-0">
+                                    <li class="mb-3 pb-3 border-bottom">
+                                        <div class="iq-search-bar members-search p-0">
+                                            <form action="#" class="searchbox w-auto">
+                                                <input type="text" class="text search-input bg-grey"
+                                                placeholder="Type here to search...">
+                                                <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                                            </form>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <div class="avatar-40 rounded-circle bg-gray text-center me-3">
+                                            <i
+                                                class="ri-bank-card-line h4"></i>
+                                        </div>
+                                        <h6 class="mb-0">Your Feed</h6>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <div class="avatar-40 rounded-circle bg-gray text-center me-3">
+                                            <i
+                                                class="ri-compass-3-line h4"></i>
+                                        </div>
+                                        <h6 class="mb-0">Discover</h6>
+                                    </li>
+                                    <li>
+                                        <button type="submit" class="btn btn-primary d-block w-100"><i
+                                            class="ri-add-line pe-2"></i>Create New Group</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">About</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-inline p-0 m-0">
+                                    <li class="mb-3">
+                                        <p class="mb-0">
+                                            {{Gname}}
+                                        </p>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-lock-fill h4"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6>Private</h6>
+                                                <p class="mb-0">
+                                                    Success in slowing economic activity.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-eye-fill h4"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6>Visible</h6>
+                                                <p class="mb-0">
+                                                    Various versions have evolved over the years
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-group-fill h4"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6>General group</h6>
+                                                <p class="mb-0">
+                                                    There are many variations of passages
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Wrapper End-->
+    {% include 'parts/footer.html' %}
+    <!-- Backend Bundle JavaScript -->
+    <script src="/static/js/libs.min.js"></script>
+    <!-- slider JavaScript -->
+    <script src="/static/js/slider.js"></script>
+    <!-- masonry JavaScript -->
+    <script src="/static/js/masonry.pkgd.min.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/enchanter.js"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="/static/js/sweetalert.js"></script>
+    <!-- app JavaScript -->
+    <script src="/static/js/charts/weather-chart.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/load.js"></script>
+    <script src="/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+    <script src="/static/js/lottie.js"></script>
+
+
+    <!-- offcanvas start -->
+    {% include 'parts/offcanvas.html' %}
+</body>
+
+</html>

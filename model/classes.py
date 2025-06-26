@@ -1,0 +1,453 @@
+from flask_login import UserMixin
+from datetime import datetime
+from datetime import datetime
+from flask_login import UserMixin
+from .__init__ import *
+
+# Association tables for many-to-many relationships
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column("date",db.DateTime,default=datetime.utcnow)
+)
+
+friends = db.Table('friends',
+    db.Column('sender_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('receiver_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('state',db.Integer,default=1)
+)
+
+
+# Association tables for many-to-many relationships
+group_memberships = db.Table('group_memberships',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('group_id', db.Integer, db.ForeignKey('group.id'), primary_key=True)
+)
+# Association tables for many-to-many relationships
+group_admins = db.Table('group_admins',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('group_id', db.Integer, db.ForeignKey('group.id'), primary_key=True),
+    db.Column('state',db.Integer,default=1)
+)
+
+event_memberships = db.Table('event_memberships',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('event_id', db.Integer, db.ForeignKey('event.id'), primary_key=True)
+)
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False, index=True)
+    email = db.Column(db.String(120), unique=True, nullable=False, index=True)
+    password = db.Column(db.String(120), nullable=False)
+    edu = db.Column(db.String(120), nullable=True)
+    viewEmail = db.Column(db.Boolean, default=False)
+    gen = db.Column(db.Integer, nullable=True)
+    work = db.Column(db.String(120), nullable=True)
+    job = db.Column(db.String(120), nullable=True)
+    con = db.Column(db.String(120), nullable=True)
+    premium = db.Column(db.Integer, default=0)
+    upgrade_date = db.Column(db.DateTime, default=datetime.utcnow)
+    joining_date = db.Column(db.DateTime, default=datetime.utcnow)
+    img = db.Column(db.String(120), nullable=True)
+    background = db.Column(db.String(120), nullable=True)
+    event_memberships = db.relationship('Event', secondary=event_memberships,
+                                        backref=db.backref('participants', lazy='dynamic'), lazy='dynamic', overlaps="members,events")
+    podcasts = db.relationship('Podcast', backref='user', lazy='dynamic')
+    privacy = db.relationship('Privacy', backref='user', lazy='dynamic')
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    like = db.relationship('Like', backref='user', lazy='dynamic')
+    elike = db.relationship('Elike', backref='user', lazy='dynamic')
+    glike = db.relationship('glike', backref='user', lazy='dynamic')
+    blog = db.relationship('Blog', backref='author', lazy='dynamic')
+    notif = db.relationship('Notif', backref='user', lazy='dynamic')
+    sent_messages = db.relationship('Message', foreign_keys='Message.sender_id', backref='sender', lazy='dynamic')
+    received_messages = db.relationship('Message', foreign_keys='Message.receiver_id', backref='receiver', lazy='dynamic')
+    followed = db.relationship('User', secondary=followers,
+                               primaryjoin=(followers.c.follower_id == id),
+                               secondaryjoin=(followers.c.followed_id == id),
+                               backref=db.backref('followers', lazy='dynamic'),
+                               lazy='dynamic')
+    friendships = db.relationship('User', secondary=friends,
+                                  primaryjoin=(friends.c.sender_id == id),
+                                  secondaryjoin=(friends.c.receiver_id == id),
+                                  backref=db.backref('friends_of', lazy='dynamic'), lazy='dynamic') # Changed backref name to friends_of
+    managed_events = db.relationship('Event', backref='manager', lazy='dynamic')
+    group_memberships = db.relationship('Group', secondary=group_memberships,
+                                        backref=db.backref('members', lazy='dynamic'), lazy='dynamic')
+    group_admins = db.relationship('Group', secondary=group_admins,
+                                        backref=db.backref('admins', lazy='dynamic'), lazy='dynamic')
+    links = db.relationship('SocialLink', backref='user', lazy='dynamic')
+    customizes = db.relationship('Customize', backref='user', lazy='dynamic')
+    responses = db.relationship('Rsponse', backref='user', lazy='dynamic')
+    assestenEnest = db.relationship('AssestenEnest', backref='user', lazy='dynamic')
+    def __repr__(self):
+        return f"User(id={self.id}, username='{self.username}', email='{self.email}')"
+class AssestenEnest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    def __repr__(self):
+        return f"AssestenEnest(id={self.id}, value='{self.value}')"
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    shares = db.Column(db.Integer, default=0)
+    ptype = db.Column(db.String(7), nullable=True)
+    groubId = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
+    eventId = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=True)
+    blogId = db.Column(db.Integer, db.ForeignKey('blog.id'), nullable=True)
+    text = db.Column(db.Text, nullable=True)
+    title = db.Column(db.Text, nullable=True)
+    zips = db.Column(db.Text, nullable=True)
+    images = db.Column(db.Text, nullable=True)
+    pdfs = db.Column(db.Text, nullable=True)
+    emailics = db.Column(db.Text, nullable=True)
+    videos = db.Column(db.Text, nullable=True)
+    gifs = db.Column(db.Text, nullable=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
+    likes = db.relationship('Like', backref='post', lazy='dynamic')
+    files = db.relationship('File', backref='post', lazy='dynamic')
+    views = db.Column(db.Integer, default=0)
+    visablity=db.Column(db.Integer, default=0)
+    moneytizing=db.relationship('Moneytize',backref='post', lazy='dynamic')
+
+    def __repr__(self):
+        return f"Post(id={self.id}, user_id={self.user_id}, type='{self.type}', text='{self.text}',title={self.title}, media='{self.media}', timestamp={self.timestamp}, views={self.views},moneytizing={self.moneytizing})"
+class Moneytize(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    value = db.Column(db.Integer, default=0)
+    left = db.Column(db.Integer, default=0)
+    wresult = db.relationship('Result', backref='mwave', lazy='dynamic')
+    wdiscount = db.relationship('Result', backref='mwavedis', lazy='dynamic')
+    def __repr__(self):
+        return f""
+class Result(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    wave = db.Column(db.Integer, db.ForeignKey('moneytize.id'), nullable=False)
+    resultCode=db.Column(db.Integer, default=0)
+    def __repr__(self):
+        return f""
+class Discount(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    wave = db.Column(db.Integer, db.ForeignKey('moneytize.id'), nullable=False)
+    Code=db.Column(db.Integer, default=0)
+    def __repr__(self):
+        return f""
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comment = db.Column(db.String(1200), nullable=False)
+    likes = db.relationship('LikeComment', backref='comment', lazy='dynamic')
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Comment(id={self.id}, post_id={self.post_id}, user_id={self.user_id}, comment='{self.comment}')"
+
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    interaction = db.Column(db.Integer, nullable=False)
+    replyToId = db.Column(db.Integer, db.ForeignKey('like.id'), nullable=True)
+
+    def __repr__(self):
+        return f"Like(id={self.id}, post_id={self.post_id}, user_id={self.user_id}, interaction={self.interaction}, replyToId={self.replyToId}, date={self.date})"
+class LikeComment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    interaction = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"LikeComment(id={self.id}, comment_id={self.comment_id}, user_id={self.user_id}, interaction={self.interaction}, date={self.date})"
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    text = db.Column(db.Text,nullable=True)
+    state = db.Column(db.Integer, nullable=False)
+    label = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Message(id={self.id}, sender_id={self.sender_id}, receiver_id={self.receiver_id}, state={self.state}, label={self.label})"
+class Rsponse(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    UE=db.Column(db.Text,nullable=True)
+    ND=db.Column(db.Text,nullable=True)
+    plan=db.Column(db.Text,nullable=True)
+    new_style=db.column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    def __repr__(self):
+        return f"Rsponse(id={self.id}, UE='{self.UE}', ND='{self.ND}', plan='{self.plan}', new_style='{self.new_style}')"
+class Customize(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(20), nullable=False)
+    value = db.Column(db.String(20), nullable=False)
+    attribute = db.Column(db.String(20), nullable=False)
+    newValue = db.Column(db.String(20), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    def __repr__(self):
+        return f"Customize(id={self.id}, type='{self.type}', value='{self.value}', attribute='{self.attribute}', newValue='{self.newValue}')"
+
+class Group(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False)
+    disc = db.Column(db.String(20), nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    img = db.Column(db.String(120), nullable=False)
+    visits = db.Column(db.Integer, default=0)
+    type = db.Column(db.String(20), default='public')
+    group_members = db.relationship('User', secondary=group_memberships,
+                                        backref=db.backref('members', lazy='dynamic'), lazy='dynamic')
+    posts = db.relationship('Post', backref='group', lazy='dynamic')
+    def __repr__(self):
+        return f"Group(id={self.id}, name='{self.name}', disc='{self.disc}', img='{self.img}', visits={self.visits})"
+
+class elemntTags(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    elemntType = db.Column(db.String(20), nullable=False)
+    elemntId = db.Column(db.Integer, nullable=False)
+    tags = db.Column(db.String(120), nullable=False)
+    def __repr__(self):
+        return f"elemntTags(id={self.id}, elemntType='{self.elemntType}', elemntId={self.elemntId}, tags='{self.tags}')"
+
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(8), nullable=False)
+    manager_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    disc = db.Column(db.Text, nullable=True)
+    pos = db.Column(db.String(120), nullable=True)
+    type = db.Column(db.String(8), default='public')
+    groupId = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
+    visits = db.Column(db.Integer, default=0)
+    members = db.relationship('User', secondary=event_memberships,
+                              backref=db.backref('mygroups', lazy='dynamic'), lazy='dynamic', overlaps="event_memberships,participants")
+    subEvents = db.relationship('SubEvent', backref='event', lazy=True)
+    posts = db.relationship('Post', backref='event', lazy='dynamic')
+    likes = db.relationship('Elike', backref='event', lazy='dynamic')
+    def __repr__(self):
+        return f"Event(id={self.id}, name='{self.name}', manager_id='{self.manager_id}', date='{self.date}', disc='{self.disc}', pos='{self.pos}')"
+class SubEvent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    name = db.Column(db.String(8), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    disc = db.Column(db.Text, nullable=True)
+    pos = db.Column(db.String(120), nullable=True)
+    def __repr__(self):
+        return f"SubEvent(id={self.id}, event_id={self.event_id}, name='{self.name}', date='{self.date}', disc='{self.disc}', pos='{self.pos}')"
+
+
+class Privacy(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    key = db.Column(db.Integer, nullable=False)
+    value = db.Column(db.String(10), nullable=False)
+    def key2value(key):
+        keys={
+            '1':"publicProfile"
+        }
+        return keys[key]
+    def __repr__(self):
+        return f"Privacy(id={self.id}, user_id={self.user_id}, type='{self.type}', value='{self.value}')"
+class Elike(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    interaction = db.Column(db.Integer, nullable=False)
+class glike(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    interaction = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"Like(id={self.id}, post_id={self.post_id}, user_id={self.user_id}, interaction={self.interaction}, replyToId={self.replyToId}, date={self.date})"
+class File(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    disc = db.Column(db.String(120), nullable=False)
+    type = db.Column(db.String(12), nullable=False)
+    postId = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    def __repr__(self):
+        return f"File(id={self.id}, disc='{self.disc}', type='{self.type}', postId={self.postId})"
+
+class pageHtml(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    title = db.Column(db.String(120), nullable=False)
+    html = db.Column(db.Text, nullable=False)
+    route = db.Column(db.String(120), nullable=False)
+    def __repr__(self):
+        return f"pageHtml(id={self.id}, user_id={self.user_id}, title='{self.title}', route='{self.route}')"
+class pageCss(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    css = db.Column(db.Text, nullable=False)
+    def __repr__(self):
+        return f"pageCss(id={self.id}, user_id={self.user_id}, css='{self.css}')"
+class pageJs(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    js = db.Column(db.Text, nullable=False)
+    def __repr__(self):
+        return f"pageJs(id={self.id}, user_id={self.user_id}, css='{self.js}')"
+class Blog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    title = db.Column(db.String(120), nullable=False)
+    def __repr__(self):
+        return f"Blog(id={self.id}, user_id={self.user_id}, title='{self.title}')"
+class BlogPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    blog_id = db.Column(db.Integer, db.ForeignKey('blog.id'), nullable=False)
+    title = db.Column(db.String(120), nullable=False)
+    sourcePost = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    def __repr__(self):
+        return f"BlogPost(id={self.id}, blog_id={self.blog_id}, title='{self.title}', sourcePost='{self.sourcePost}')"
+class MailList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    blogId = db.Column(db.Integer, db.ForeignKey('blog.id'), nullable=False)
+    reptionKey = db.Column(db.Integer, nullable=False)
+    def __repr__(self):
+        return f"MailList(id={self.id}, blogId={self.blogId}, reptionKey='{self.reptionKey}')" 
+class Mail(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mailListId = db.Column(db.Integer, db.ForeignKey('mail_list.id'), nullable=False)
+    mail = db.Column(db.String(120), nullable=False)
+    def __repr__(self):
+        return f"Mail(id={self.id}, mailListId={self.mailListId}, mail='{self.mail}')"
+
+class Podcast(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    name = db.Column(db.String(120), nullable=False, unique=True)
+    subject  = db.Column(db.String(120), nullable=True)
+    disc = db.Column(db.Text, nullable=False)
+    img = db.Column(db.String(120), nullable=False)
+    items = db.relationship('PodcastPlayListItem', backref='podcast', lazy='dynamic')
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    likes = db.relationship('PodcastLike', backref='podcast', lazy='dynamic')
+    comments = db.relationship('PodcastComment', backref='podcast', lazy='dynamic')
+    shares = db.Column(db.Integer, default=0)
+    views = db.Column(db.Integer, default=0)
+    listen = db.relationship('PodcastListen', backref='podcast', lazy='dynamic')
+    
+
+
+    def __repr__(self):
+        return f'Podcast(id={self.id}, name="{self.name}", disc="{self.disc}", img="{self.img}, time={self.time}")'
+
+class PodcastPlayList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    disc = db.Column(db.String(120), nullable=False)
+    img = db.Column(db.String(120), nullable=False)
+    items = db.relationship('PodcastPlayListItem', backref='playlist', lazy='dynamic')
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    likes = db.relationship('PodcastPlayListLike', backref='playlist', lazy='dynamic')
+    comments = db.relationship('PodcastPlayListComment', backref='playlist', lazy='dynamic')
+        
+    def __repr__(self):
+        return f'PodcastPlayList(id={self.id}, name="{self.name}", disc="{self.disc}", img="{self.img}")'
+class PodcastPlayListItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    podcastId = db.Column(db.Integer, db.ForeignKey('podcast_play_list.id'), nullable=False)
+    playListId = db.Column(db.Integer, db.ForeignKey('podcast.id'), nullable=False)
+    def __repr__(self):
+        return f'PodcastPlayListItem(id={self.id}, podcastId={self.podcastId}, playListId={self.playListId})'
+class PodcastLike(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    podcastId = db.Column(db.Integer, db.ForeignKey('podcast.id'), nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    def __repr__(self):
+        return f'PodcastLike(id={self.id}, podcastId={self.podcastId}, time={self.time})'
+class PodcastPlayListLike(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    playListId = db.Column(db.Integer, db.ForeignKey('podcast_play_list.id'), nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    def __repr__(self):
+        return f'PodcastPlayListLike(id={self.id}, playListId={self.playListId}, time={self.time})'
+class PodcastComment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    podcastId = db.Column(db.Integer, db.ForeignKey('podcast.id'), nullable=False)
+    def __repr__(self):
+        return f'PodcastComment(id={self.id}, text="{self.text}", time={self.time}, podcastId={self.podcastId})'
+class PodcastPlayListComment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    playListId = db.Column(db.Integer, db.ForeignKey('podcast_play_list.id'), nullable=False)
+    views = db.Column(db.Integer, default=0)
+    def __repr__(self):
+        return f'PodcastPlayListComment(id={self.id}, text="{self.text}", time={self.time}, playListId={self.playListId}, views={self.views})'
+class PodcastPlayListListen(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    playListId=db.Column(db.Integer, db.ForeignKey('podcast_play_list.id'), nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    persent = db.Column(db.Integer, default=0)
+    def __repr__(self):
+        return 'PodcastPlayListListen(id={self.id}, playListId={self.playListId}, time={self.time}, persent={self.persent})'
+
+class PodcastListen(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    podcastId=db.Column(db.Integer, db.ForeignKey('podcast.id'), nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    persent = db.Column(db.Integer, default=0)
+    def __repr__(self):
+        return 'PodcastListen(id={self.id}, podcastId={self.podcastId}, time={self.time}, persent={self.persent})'
+class VideoWatch(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    postId=db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    def __repr__(self):
+        return 'VideoWatch(id={self.id}, podcastId={self.podcastId}, time={self.time})'
+class SocialLink(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    link = db.Column(db.String(120), nullable=False)
+    type = db.Column(db.String(120), nullable=False)
+    def __repr__(self):
+        return f'SocialLink(id={self.id}, user_id={self.user_id}, link"{self.link}, type="{self.type}")'
+class Notif(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    text=db.Column(db.String(120), nullable=False)
+    link=db.Column(db.String(120), nullable=False)
+    userId=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    def __repr__(self):
+        return f'Notif(id={self.id},text={self.text},userId={self.userId}, link={self.link})'
+def classer(name):
+    {'User':User,'AssestenEnest':AssestenEnest,'Post':Post,'Moneytize':Moneytize,'Result':Result,'Discount':Discount,'Comment':Comment,'Like':Like,'LikeComment':LikeComment,'Message':Message,'Rsponse':Rsponse,'Customize':Customize,'Group':Group,'elemntTags':elemntTags,'Event':Event,'SubEvent':SubEvent,'Privacy':Privacy,'Elike':Elike,'glike':glike,'File':File,'pageHtml':pageHtml,'pageCss':pageCss,'pageJs':pageJs,'Blog':Blog,'BlogPost':BlogPost,'MailList':MailList,'Mail':Mail,'Podcast':Podcast,'PodcastPlayList':PodcastPlayList,'PodcastPlayListItem':PodcastPlayListItem,'PodcastLike':PodcastLike,'PodcastPlayListLike':PodcastPlayListLike,'PodcastComment':PodcastComment,'PodcastPlayListComment':PodcastPlayListComment,'PodcastPlayListListen':PodcastPlayListListen,'PodcastListen':PodcastListen,'VideoWatch':VideoWatch,'SocialLink':SocialLink,'Notif':Notif}
+"""start_date = request.args.get('start', default='2023-01-01')
+    end_date = request.args.get('end', default='2023-12-31')
+    
+    try:
+        # Convert string dates to date objects
+        start = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end = datetime.strptime(end_date, '%Y-%m-%d').date()
+        
+        # Query for events in this range
+        events = Event.query.filter(
+            func.date(Event.created_at) >= start,
+            func.date(Event.created_at) <= end
+        ).order_by(Event.created_at).all()"""
